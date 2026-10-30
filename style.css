@@ -1,41 +1,46 @@
-/* "Steppe Sky", the palette from the Pace mini app. --hint and --primary-ink are darker in light mode so small text stays readable. */
 :root {
   color-scheme: light;
-  --bg: #f2f4f8;
-  --card: #ffffff;
-  --text: #0e1525;
-  --hint: #5f687a;
-  --sep: rgba(124, 133, 151, 0.18);
-  --field: rgba(124, 133, 151, 0.1);
+  --bg: #ffffff;
+  --surface: #f4f7fd;
+  --surface-hover: #e8f0fc;
+  --text: #171a20;
+  --muted: #565d68;
+  --faint: #6b727d;
+  --line: #e4e8ef;
+  --line-strong: #cdd7e6;
+  --start-bg: #2f6fde;
+  --start-hover: #235ec4;
+  --glow: rgba(91, 147, 240, 0.26);
+  --warm: rgba(242, 181, 68, 0.14);
+  --grid-line: rgba(47, 111, 222, 0.08);
+  --flash: rgba(91, 147, 240, 0.42);
+  --paint-opacity: 0.3;
 
-  --primary: #2a6fdb;
-  --primary-ink: #1f5bb8;
-  --on-primary: #ffffff;
-  --accent: #f2b544;
-
-  --radius: 16px;
-  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, sans-serif;
+  --blue: #5b93f0;
+  --sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --shadow: 0 1px 2px rgba(14, 21, 37, 0.04), 0 4px 16px rgba(14, 21, 37, 0.04);
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0f1218;
-  --card: #181c24;
-  --text: #eef1f6;
-  --hint: #8f98a9;
-  --sep: rgba(135, 144, 162, 0.16);
-  --field: rgba(135, 144, 162, 0.12);
-
-  --primary: #5b92f0;
-  --primary-ink: #5b92f0;
-  --on-primary: #0f1218;
-  --accent: #f5c468;
-  --shadow: none;
+  --bg: #171717;
+  --surface: #212121;
+  --surface-hover: #2a2a2a;
+  --text: #f5f5f5;
+  --muted: #a8a8a8;
+  --faint: #868686;
+  --line: #2e2e2e;
+  --line-strong: #3d3d3d;
+  --start-bg: #3b7be0;
+  --start-hover: #4f8df0;
+  --glow: rgba(91, 147, 240, 0.15);
+  --warm: rgba(242, 181, 68, 0.09);
+  --grid-line: rgba(255, 255, 255, 0.04);
+  --flash: rgba(91, 147, 240, 0.3);
+  --paint-opacity: 0.3;
 }
 
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; }
 
 body {
   display: flex;
@@ -43,49 +48,133 @@ body {
   min-height: 100vh;
   min-height: 100svh;
   margin: 0;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 34% 40% at 100% 0%, var(--warm), transparent 100%),
+    radial-gradient(ellipse 60% 50% at 50% 44%, var(--glow), transparent 72%);
   color: var(--text);
-  font: 15px/1.4 var(--sans);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Faint grid that fades out towards the edges */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 65% 60% at 50% 45%, #000, transparent 80%);
+  mask-image: radial-gradient(ellipse 65% 60% at 50% 45%, #000, transparent 80%);
+  pointer-events: none;
+}
+
+/* Painted figure: takes up 80% of the screen */
+.painting {
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  z-index: -1;
+  width: 80%;
+  height: 80%;
+  overflow: visible;
+  opacity: var(--paint-opacity);
+  pointer-events: none;
+}
+
+.paint-arc { stroke: var(--blue); }
+
+.paint-tail { stroke: var(--blue); stroke-opacity: 0.4; }
+
+.paint-dot { fill: #f2b544; stroke: none; }
+
+/* Soft flash of light when the mocks open */
+body::after {
+  content: "";
+  position: fixed;
+  top: 62%;
+  left: 50%;
+  z-index: -1;
+  width: 150vmax;
+  height: 150vmax;
+  background: radial-gradient(closest-side, var(--flash), transparent);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+body.flash::after { animation: flash 1.1s ease-out; }
+
+@keyframes flash {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
 }
 
 a { color: inherit; text-decoration: none; }
 
-a:focus-visible, button:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+a:focus-visible, .start:focus-visible, .mock:focus-visible, .back:focus-visible, .theme:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 .wrap {
-  width: min(520px, 100%);
+  width: min(1040px, 100%);
   margin: 0 auto;
-  padding-inline: 14px;
+  padding: 0 24px;
 }
 
 /* Top bar */
+.top { border-bottom: 1px solid var(--line); }
+
 .top-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 56px;
+  height: 60px;
 }
 
-.brand { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; border-radius: 4px; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.brand img { display: block; }
+
+.top-right { display: flex; align-items: center; gap: 10px; }
+
+.pill {
+  padding: 3px 11px;
+  background: var(--surface);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+}
 
 .theme {
   display: grid;
   place-items: center;
   width: 38px;
   height: 38px;
-  background: var(--card);
+  margin-right: -8px;
+  background: none;
   border: 0;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  color: var(--hint);
+  border-radius: 8px;
+  color: var(--muted);
   cursor: pointer;
 }
 
-.theme:hover { color: var(--text); }
+.theme:hover { background: var(--surface-hover); color: var(--text); }
 
 .theme svg {
   width: 20px;
@@ -104,69 +193,43 @@ a:focus-visible, button:focus-visible {
 
 [data-theme="dark"] .icon-moon { display: none; }
 
-/* Centred card: the button is visible as soon as the site opens */
-.page {
-  display: grid;
-  flex: 1;
-  align-content: center;
-  padding-block: 24px;
-}
-
+/* Centred intro: the button is visible as soon as the site opens */
 .hero {
-  position: relative;
-  overflow: hidden;
-  padding: 20px;
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  animation: rise 0.35s var(--ease);
-}
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(6px); }
-}
-
-/* Gold glow in the corner */
-.hero::after {
-  content: "";
-  position: absolute;
-  top: -90px;
-  right: -70px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 28%, transparent), transparent 70%);
-  pointer-events: none;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 48px;
+  padding-bottom: 48px;
+  text-align: center;
 }
 
 h1 {
-  position: relative;
-  z-index: 1;
+  max-width: 13em;
   margin: 0;
-  font-size: clamp(28px, 7vw, 32px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
 }
 
 .lede {
-  position: relative;
-  z-index: 1;
-  margin: 10px 0 0;
-  color: var(--hint);
+  max-width: 30em;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 19px;
 }
 
 /* Areas that open and close by animating their height */
 .reveal {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-rows: 0fr;
+  width: 100%;
   transition: grid-template-rows 0.55s var(--ease);
 }
 
-/* The negative margin leaves room for focus outlines inside the clipped area */
-.reveal-inner { min-height: 0; margin: 0 -6px; padding-inline: 6px; overflow: hidden; }
+.reveal-inner { min-height: 0; overflow: hidden; }
 
 .start-area { grid-template-rows: 1fr; }
 
@@ -174,103 +237,109 @@ h1 {
 
 .hero.open .mocks-area { grid-template-rows: 1fr; }
 
-.start-area .reveal-inner { padding-block: 16px 6px; margin-bottom: -6px; transition: opacity 0.25s ease; }
+.start-area .reveal-inner { padding: 6px; transition: opacity 0.25s ease, transform 0.3s ease; }
 
-.hero.open .start-area .reveal-inner { opacity: 0; }
-
-.start, .back {
-  width: 100%;
-  height: 46px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: 12px;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-}
+.hero.open .start-area .reveal-inner { opacity: 0; transform: scale(0.92); }
 
 .start {
-  background: var(--primary);
-  color: var(--on-primary);
-  transition: transform 0.15s var(--ease), opacity 0.2s;
+  margin-top: 34px;
+  padding: 16px 36px;
+  background: var(--start-bg);
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
 
-.start:hover { opacity: 0.88; }
-
-.start:active, .back:active { transform: scale(0.98); }
+.start:hover { background: var(--start-hover); }
 
 /* The two mock tests */
-.mocks { padding-block: 14px 6px; margin-bottom: -6px; }
+.mocks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: min(640px, 100%);
+  margin: 0 auto;
+  padding: 44px 6px 6px;
+}
 
 .mock {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 12px 0;
-  background: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 22px 24px;
+  background: linear-gradient(135deg, #3f80e6, #205fc4);
   border: 0;
-  color: inherit;
+  border-radius: 16px;
+  color: #fff;
   font: inherit;
   text-align: left;
+  cursor: pointer;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.5s var(--ease);
+  transform: translateY(36px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s var(--ease),
+    filter 0.15s ease;
 }
 
-.mock + .mock { border-top: 1px solid var(--sep); }
+.hero.open .mock { opacity: 1; transform: none; transition-delay: 0.14s, 0.14s, 0s; }
 
-.hero.open .mock { opacity: 1; transform: none; transition-delay: 0.14s; }
+.hero.open .mock:nth-child(2) { transition-delay: 0.26s, 0.26s, 0s; }
 
-.hero.open .mock + .mock { transition-delay: 0.22s; }
+.mock:hover { filter: brightness(1.1); }
 
-.mock-icon {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  background: color-mix(in srgb, var(--primary) 12%, transparent);
-  border-radius: 9px;
-  color: var(--primary-ink);
-  font-weight: 700;
-}
+.mock-name { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
 
-.mock-name { flex: 1; min-width: 0; font-weight: 500; }
-
-.mock-note {
-  flex: none;
-  padding: 3px 9px;
-  background: var(--field);
-  border-radius: 999px;
-  color: var(--hint);
-  font-size: 12px;
-  font-weight: 600;
-}
+.mock-note { color: rgba(255, 255, 255, 0.85); font-size: 14px; }
 
 .back {
-  margin-top: 10px;
-  background: color-mix(in srgb, var(--primary) 12%, transparent);
-  color: var(--primary-ink);
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin-top: 4px;
+  padding: 8px 14px;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease, transform 0.15s var(--ease);
+  transition: opacity 0.2s ease, color 0.15s ease;
 }
 
-.hero.open .back { opacity: 1; transition-delay: 0.3s, 0s; }
+.hero.open .back { opacity: 1; transition-delay: 0.4s, 0s; }
+
+.back:hover { color: var(--text); }
 
 /* Footer */
 .end {
-  padding: 8px 0 calc(16px + env(safe-area-inset-bottom));
-  color: var(--hint);
-  font-size: 13px;
+  padding: 24px 0 28px;
+  color: var(--faint);
+  font-size: 14px;
   text-align: center;
 }
 
 .end p { margin: 0; }
 
+@media (max-width: 760px) {
+  .painting { left: -7%; width: 114%; }
+  .wrap { padding: 0 16px; }
+  .lede { font-size: 18px; }
+  .start { width: 100%; max-width: 340px; }
+  .mocks { gap: 12px; padding-top: 36px; }
+  .mock { padding: 18px; }
+  .mock-name { font-size: 18px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-  }
+  .reveal, .start, .start-area .reveal-inner, .mock, .back { transition: none; }
+  .hero.open .mock, .hero.open .mock:nth-child(2), .hero.open .back { transition-delay: 0s; }
+  body.flash::after { animation: none; }
 }
