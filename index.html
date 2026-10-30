@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NUET Notes</title>
   <meta name="description" content="Mock tests for the NUET.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script>
     // Set before the page paints, so it never flashes the wrong mode
@@ -21,7 +18,7 @@
 </head>
 <body>
 
-  <header class="top">
+  <header>
     <div class="wrap top-inner">
       <a class="brand" href="./">NUET Notes</a>
       <button class="theme" id="theme" type="button">
@@ -31,29 +28,33 @@
     </div>
   </header>
 
-  <main class="hero wrap" id="hero">
-    <h1>Getting ready for the NUET? Start with a mock.</h1>
-    <p class="lede">Two mock tests show you where you stand. After that, you'll know what to work on first.</p>
+  <main class="page wrap">
+    <section class="hero" id="hero">
+      <h1>Getting ready for the NUET? Start with a mock.</h1>
+      <p class="lede">Two mock tests show you where you stand. After that, you'll know what to work on first.</p>
 
-    <div class="reveal start-area">
-      <div class="reveal-inner">
-        <button class="start" id="start-mock" type="button">Start mock test</button>
+      <div class="reveal start-area">
+        <div class="reveal-inner">
+          <button class="start" id="start-mock" type="button">Start mock test</button>
+        </div>
       </div>
-    </div>
 
-    <div class="reveal mocks-area">
-      <div class="reveal-inner mocks" id="mocks" inert>
-        <button class="mock" type="button">
-          <span class="mock-name">Math</span>
-          <span class="mock-note">Not added yet</span>
-        </button>
-        <button class="mock" type="button">
-          <span class="mock-name">Critical Thinking &amp; PS</span>
-          <span class="mock-note">Not added yet</span>
-        </button>
-        <button class="back" id="back" type="button">← Back</button>
+      <div class="reveal mocks-area">
+        <div class="reveal-inner mocks" id="mocks" inert>
+          <button class="mock" type="button" disabled>
+            <span class="mock-icon" aria-hidden="true">∑</span>
+            <span class="mock-name">Math</span>
+            <span class="mock-note">Not added yet</span>
+          </button>
+          <button class="mock" type="button" disabled>
+            <span class="mock-icon" aria-hidden="true">?</span>
+            <span class="mock-name">Critical Thinking &amp; PS</span>
+            <span class="mock-note">Not added yet</span>
+          </button>
+          <button class="back" id="back" type="button">← Back</button>
+        </div>
       </div>
-    </div>
+    </section>
   </main>
 
   <footer class="end">
@@ -66,6 +67,7 @@
     const hero = document.getElementById("hero");
     const startButton = document.getElementById("start-mock");
     const mocks = document.getElementById("mocks");
+    const backButton = document.getElementById("back");
     const themeButton = document.getElementById("theme");
     let scrollTimer;
 
@@ -84,20 +86,18 @@
 
     startButton.addEventListener("click", (e) => {
       hero.classList.add("open");
-      document.body.classList.add("flash");
       startButton.parentElement.inert = true;
       mocks.inert = false;
       // detail is 0 for keyboard presses: keep those users' place on the page
-      if (e.detail === 0) mocks.querySelector("button").focus({ preventScroll: true });
+      if (e.detail === 0) backButton.focus({ preventScroll: true });
       // On short screens the mocks can land below the fold
       const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
       scrollTimer = setTimeout(() => mocks.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" }), 600);
     });
 
-    document.getElementById("back").addEventListener("click", (e) => {
+    backButton.addEventListener("click", (e) => {
       clearTimeout(scrollTimer);
       hero.classList.remove("open");
-      document.body.classList.remove("flash");
       mocks.inert = true;
       startButton.parentElement.inert = false;
       if (e.detail === 0) startButton.focus({ preventScroll: true });
