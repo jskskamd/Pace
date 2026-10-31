@@ -27,15 +27,15 @@
     <defs>
       <filter id="paint" x="-40%" y="-40%" width="180%" height="180%">
         <feTurbulence type="fractalNoise" baseFrequency="0.009" numOctaves="4" seed="7" result="wobble"/>
-        <feDisplacementMap in="SourceGraphic" in2="wobble" scale="60" xChannelSelector="R" yChannelSelector="G" result="shape"/>
-        <feGaussianBlur in="shape" stdDeviation="14" result="soft"/>
+        <feDisplacementMap in="SourceGraphic" in2="wobble" scale="24" xChannelSelector="R" yChannelSelector="G" result="shape"/>
+        <feGaussianBlur in="shape" stdDeviation="3.5" result="soft"/>
         <feTurbulence type="fractalNoise" baseFrequency="0.005" numOctaves="2" seed="3" result="pigment"/>
         <feColorMatrix in="pigment" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1 1.4" result="wash"/>
         <feComposite in="soft" in2="wash" operator="in"/>
       </filter>
     </defs>
     <g filter="url(#paint)" fill="none" stroke-linecap="round">
-      <path class="paint-tail" d="M140 560A360 360 0 0 1 860 560" stroke-width="186"/>
+      <path class="paint-tail" d="M757 308A360 360 0 0 1 860 560" stroke-width="124"/>
       <path class="paint-arc" d="M140 560A360 360 0 0 1 757 308" stroke-width="124"/>
       <circle class="paint-dot" cx="757" cy="308" r="88"/>
     </g>
