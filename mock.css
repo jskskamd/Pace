@@ -3,12 +3,14 @@
   --marked-bg: #fdeac2;
   --marked-text: #9a6200;
   --chosen: #edf4ff;
+  --watermark: 0.07;
 }
 
 :root[data-theme="dark"] {
   --marked-bg: #4d3b14;
   --marked-text: #f2c66d;
   --chosen: #1f3254;
+  --watermark: 0.1;
 }
 
 .exam-page { display: block; padding: 20px; background-image: none; }
@@ -169,6 +171,18 @@
   background: var(--bar);
   border: 1px solid var(--bar-line);
   border-radius: 18px;
+  isolation: isolate;
+}
+
+/* Faint logo behind the question */
+.question::before {
+  content: "";
+  position: absolute;
+  inset: 24px;
+  z-index: -1;
+  background: url("images/watermark.svg") center / min(85%, 480px) no-repeat;
+  opacity: var(--watermark);
+  pointer-events: none;
 }
 
 .bookmark {
@@ -237,7 +251,7 @@ sup { font-size: 0.72em; line-height: 0; }
   gap: 16px;
   width: 100%;
   padding: 10px 16px;
-  background: var(--bar);
+  background: none;
   border: 1px solid var(--bar-line);
   border-radius: 12px;
   color: var(--text);
