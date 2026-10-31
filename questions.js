@@ -5,6 +5,7 @@
 //     table: { head: [...], rows: [[...]] },   // optional, shown after the passage
 //     q: "Question text",                      // ^{...} makes superscript, as in x^{2}
 //     image: "images/q1.png",                  // optional, for questions with a diagram
+//     alt: "What the diagram shows",           // needed with image, for screen readers
 //     options: ["...", "...", "..."],          // 2 to 8 options, shown as A to H
 //     answer: 2,                               // correct option: 0 = A, 1 = B, 2 = C and so on
 //     topic: "M1 Units",                       // optional: short code, then the name, for the results
@@ -156,6 +157,7 @@ const TESTS = {
       {
         q: "The graphs y = 2x − 1 and y = x² − 4 intersect at two points. What is the sum of the y-coordinates of the intersection points?",
         image: "images/math-q18.svg",
+        alt: "Graph of the line y = 2x − 1 and the curve y = x² − 4 on the same axes, crossing at two points.",
         options: ["2", "−3", "0", "−8", "8"],
         answer: 0,
         topic: "M4 Algebra",
@@ -173,6 +175,7 @@ const TESTS = {
       {
         q: "The graph of y = x² − 4x + 1 is shown. What are the coordinates of its turning point?",
         image: "images/math-q20.svg",
+        alt: "Graph of the U-shaped curve y = x² − 4x + 1.",
         options: ["(−2, −3)", "(2, 3)", "(2, −3)", "(4, 1)", "(−4, 1)"],
         answer: 2,
         topic: "M4 Algebra",
@@ -206,6 +209,7 @@ const TESTS = {
       {
         q: "In right-angled triangle ABC, angle C is 90°, AC = 9 cm and BC = 12 cm. A perpendicular is drawn from C to hypotenuse AB, meeting it at D. Find CD.",
         image: "images/math-q24.png",
+        alt: "Right triangle ABC with AC 9 cm and BC 12 cm. A dashed altitude runs from C to a right angle at D on AB.",
         options: ["5.4 cm", "6 cm", "7.2 cm", "8 cm", "9 cm"],
         answer: 2,
         topic: "M5 Geometry",
@@ -215,6 +219,7 @@ const TESTS = {
       {
         q: "ABCD is a cyclic quadrilateral. Opposite angles B and D are (3x + 12)° and (5x − 8)° respectively. Find angle B.",
         image: "images/math-q25.png",
+        alt: "Quadrilateral ABCD with all four corners on a circle.",
         options: ["78°", "72°", "84°", "96°", "102°"],
         answer: 0,
         topic: "M5 Geometry",
@@ -224,6 +229,7 @@ const TESTS = {
       {
         q: "A sector has radius 9 cm and central angle 80°. Find its area in exact form.",
         image: "images/math-q26.png",
+        alt: "Circular sector with two 9 cm radii and an 80° angle between them.",
         options: ["12π cm²", "16π cm²", "18π cm²", "20π cm²", "24π cm²"],
         answer: 2,
         topic: "M5 Geometry",
@@ -233,6 +239,7 @@ const TESTS = {
       {
         q: "Two similar solids have volumes in the ratio 8:27 (smaller to larger). The surface area of the smaller solid is 40 cm². Find the surface area of the larger solid.",
         image: "images/math-q27.png",
+        alt: "Two similar box-shaped solids, labelled smaller and larger.",
         options: ["60 cm²", "75 cm²", "80 cm²", "90 cm²", "135 cm²"],
         answer: 3,
         topic: "M5 Geometry",
@@ -242,6 +249,7 @@ const TESTS = {
       {
         q: "A right-angled trapezium has parallel sides of lengths 10 cm and 16 cm. Its perpendicular height is 6 cm. Find its area.",
         image: "images/math-q28.png",
+        alt: "Trapezium with parallel sides of 10 cm and 16 cm and a dashed perpendicular height of 6 cm.",
         options: ["72 cm²", "75 cm²", "96 cm²", "84 cm²", "78 cm²"],
         answer: 4,
         topic: "M5 Geometry",
@@ -251,7 +259,8 @@ const TESTS = {
       {
         q: "A cuboid has dimensions 6 cm, 8 cm and 12 cm. Find the length of its space diagonal.",
         image: "images/math-q29.png",
-        options: ["2√49 cm", "2√61 cm", "4√13 cm", "14 cm", "16 cm"],
+        alt: "Cuboid with edges of 6 cm, 8 cm and 12 cm and a dashed space diagonal d.",
+        options: ["2√55 cm", "2√61 cm", "4√13 cm", "14 cm", "16 cm"],
         answer: 1,
         topic: "M5 Geometry",
         marks: 5,
@@ -260,6 +269,7 @@ const TESTS = {
       {
         q: "In parallelogram ABCD, the adjacent side vectors are AB = (5, 1) and AD = (2, 4). Find the length of diagonal AC.",
         image: "images/math-q30.png",
+        alt: "Parallelogram ABCD with arrows AB = (5, 1) and AD = (2, 4), and dashed diagonal AC.",
         options: ["√50", "√74", "√65", "√58", "√85"],
         answer: 1,
         topic: "M5 Geometry",
@@ -381,6 +391,7 @@ const TESTS = {
       {
         q: "In the diagram, all measurements are in metres. The perimeter of the triangle is 56 m. The area of the triangle is A m^{2}. Work out the value of A.",
         image: "images/q16.png",
+        alt: "Right triangle with perpendicular sides x − 1 and 3x, and hypotenuse 3x + 1.",
         options: ["62", "68", "76", "74", "82", "84", "90", "78"],
         answer: 5,
         topic: "M5 Geometry",
@@ -424,6 +435,7 @@ const TESTS = {
       {
         q: "ABCD is a trapezoid with AB parallel to DC. Using the information in the diagram, find the length DC.",
         image: "images/q22.png",
+        alt: "Trapezoid ABCD with AB, AD and BC each 4 and a 120° angle at A. DC is the longer parallel side.",
         options: ["8", "4 + 2√3", "4 + 4√3", "10", "12", "6", "6 + 2√3", "6 + √3"],
         answer: 0,
         topic: "M5 Geometry",
@@ -432,6 +444,7 @@ const TESTS = {
       {
         q: "A, B and C are points on the circle, centre O. AB and OC intersect at P. Find the value of w.",
         image: "images/q23.png",
+        alt: "Circle with centre O. Radii OA and OC form a 104° angle. Chord AB crosses OC at P, and angle OAB is 21°. Chord BC is drawn, and w° is the angle at C between CO and CB.",
         options: ["22.5", "46", "83", "65", "32", "53", "73", "55"],
         answer: 6,
         topic: "M5 Geometry",
@@ -454,6 +467,7 @@ const TESTS = {
       {
         q: "Find the area of triangle ABC.",
         image: "images/q26.png",
+        alt: "Right triangle ABC with the right angle at C, AC 15, and a 30° angle at A.",
         options: ["75", "75√3", "75√3/2", "225√3/2", "225/2", "25√3", "225/4", "75/2"],
         answer: 2,
         topic: "M5 Geometry",
@@ -476,6 +490,7 @@ const TESTS = {
       {
         q: "Two similar right-angled triangles are joined to form a quadrilateral, as shown. What is the area of the quadrilateral?",
         image: "images/q29.png",
+        alt: "Right triangle with perpendicular sides of 5 cm and 3 cm, and angle θ between the 3 cm side and the hypotenuse. A second right triangle is joined along that hypotenuse, which is the side opposite its own angle θ.",
         options: ["12.3", "13.2", "15.0", "18.8", "27.9", "17.7"],
         answer: 5,
         topic: "M5 Geometry",
@@ -642,6 +657,7 @@ const TESTS = {
       {
         passage: "The graph shows a workshop's output over five days. Every item produced on Tuesday, Thursday and Friday was inspected. On Monday and Wednesday exactly half were inspected. No item was counted more than once.",
         image: "images/crit-q18.svg",
+        alt: "Bar chart of items produced: Monday 40, Tuesday 60, Wednesday 80, Thursday 40, Friday 30.",
         q: "How many items were inspected in total?",
         options: ["140", "160", "190", "200", "240"],
         answer: 2,

@@ -2,10 +2,10 @@ const $ = (id) => document.getElementById(id);
 const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 const requested = new URLSearchParams(location.search).get("subject");
-const subject = requested in TESTS ? requested : "math";
+const subject = Object.hasOwn(TESTS, requested || "") ? requested : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
-const storeKey = `pacemock-v6:${subject}`;
+const storeKey = `pacemock-v6:${subject}${window.accountId ? `:${window.accountId}` : ""}`;
 
 const question = (i) => test.questions[i] || {
   q: `Question ${i + 1} will appear here.`,
@@ -32,6 +32,7 @@ function loadState() {
 
 let state = loadState(); // saved on every change, so a refresh picks up where it stopped
 let timer;
+let lastLeft;
 
 function save() {
   try { localStorage.setItem(storeKey, JSON.stringify(state)); } catch (e) {}
@@ -119,6 +120,7 @@ function render() {
   $("question-text")[q.passage ? "before" : "after"]($("question-image"));
   $("question-image").hidden = !q.image;
   if (q.image) $("question-image").src = q.image;
+  $("question-image").alt = q.alt || "";
   $("previous").disabled = state.current === 0;
   $("next").disabled = state.current === total - 1;
   const marked = Boolean(state.marked[state.current]);
@@ -167,6 +169,10 @@ function formatTime(ms) {
 function tick() {
   const left = state.endsAt - Date.now();
   $("time").textContent = formatTime(left);
+  $("timer").classList.toggle("low", left <= 5 * 60000);
+  const passed = [5, 1].find((minutes) => lastLeft > minutes * 60000 && left <= minutes * 60000);
+  if (passed) $("time-alert").textContent = `${passed} minute${passed === 1 ? "" : "s"} left`;
+  lastLeft = left;
   if (left <= 0) finish();
 }
 
@@ -180,14 +186,18 @@ function runExam() {
 
 function finish() {
   clearInterval(timer);
-  clearSaved();
   if ($("confirm").open) $("confirm").close();
 
-  const used = Math.min(test.minutes * 60000, test.minutes * 60000 - (state.endsAt - Date.now()));
+  // Kept in the saved state, so the results are still here after a refresh
+  if (!state.finished) {
+    state.finished = true;
+    state.used = Math.min(test.minutes * 60000, test.minutes * 60000 - (state.endsAt - Date.now()));
+    save();
+  }
   const rows = [
     ["Answered", `${answeredCount()} of ${total}`],
     ["Marked", markedCount()],
-    ["Time used", formatTime(used)],
+    ["Time used", formatTime(state.used)],
   ];
   const worth = (q) => q.marks || 1;
   const sum = (list) => list.reduce((all, q) => all + worth(q), 0);
@@ -206,6 +216,7 @@ function finish() {
     row.append(term, detail);
     return row;
   }));
+  $("intro").hidden = true;
   $("exam").hidden = true;
   $("results").hidden = false;
   if (test.questions.length) animateScore(scored, sum(test.questions));
@@ -289,7 +300,7 @@ function reviewItem(q, index) {
   const image = q.image ? element("img", "question-image") : null;
   if (image) {
     image.src = q.image;
-    image.alt = "";
+    image.alt = q.alt || "";
   }
   if (q.passage) item.append(element("p", "passage", q.passage));
   if (q.table) {
@@ -325,6 +336,10 @@ function showReview(open) {
 }
 
 $("show-review").addEventListener("click", () => showReview(true));
+$("retake").addEventListener("click", () => {
+  clearSaved();
+  location.reload();
+});
 $("hide-review").addEventListener("click", () => showReview(false));
 $("previous").addEventListener("click", () => goTo(state.current - 1));
 $("next").addEventListener("click", () => goTo(state.current + 1));
@@ -349,4 +364,5 @@ $("begin").addEventListener("click", () => {
 $("intro-subject").textContent = `${test.title} · ${total} questions · ${test.minutes} minutes`;
 render();
 renderSide();
-if (state.endsAt) runExam();
+if (state.finished) finish();
+else if (state.endsAt) runExam();

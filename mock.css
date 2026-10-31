@@ -140,6 +140,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+.timer.low { color: #c53030; }
+
+[data-theme="dark"] .timer.low { color: #e86a6a; }
+
+/* Read out by screen readers; sighted users get the red timer */
+.time-alert { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
 .toggle-side svg, .timer svg, .bookmark svg {
   width: 22px;
   height: 22px;
@@ -325,6 +332,8 @@ sup { font-size: 0.72em; line-height: 0; }
 .confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 .confirm-actions button { min-width: 0; padding: 0; }
+
+.confirm-actions #show-review { grid-column: 1 / -1; order: -1; }
 
 /* Results */
 .results {
