@@ -4,7 +4,7 @@ const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const subject = new URLSearchParams(location.search).get("subject") === "crit" ? "crit" : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
-const storeKey = `pacemock-v4:${subject}`;
+const storeKey = `pacemock-v5:${subject}`;
 
 const question = (i) => test.questions[i] || {
   q: `Question ${i + 1} will appear here.`,
@@ -84,10 +84,35 @@ function renderOptions(q) {
   }));
 }
 
+function renderTable(table) {
+  const row = (cells, tag) => {
+    const tr = document.createElement("tr");
+    tr.append(...cells.map((text) => {
+      const cell = document.createElement(tag);
+      cell.textContent = text;
+      return cell;
+    }));
+    return tr;
+  };
+  $("question-table").hidden = !table;
+  $("question-table").replaceChildren();
+  if (!table) return;
+  const head = document.createElement("thead");
+  const body = document.createElement("tbody");
+  head.append(row(table.head, "th"));
+  body.append(...table.rows.map((cells) => row(cells, "td")));
+  $("question-table").append(head, body);
+}
+
 function render() {
   const q = question(state.current);
   $("progress").textContent = `${test.title} · Question ${state.current + 1} of ${total}`;
+  $("passage").hidden = !q.passage;
+  setText($("passage"), q.passage || "");
+  renderTable(q.table);
   setText($("question-text"), q.q);
+  // A graph belongs to the passage, so it goes above the question
+  $("question-text")[q.passage ? "before" : "after"]($("question-image"));
   $("question-image").hidden = !q.image;
   if (q.image) $("question-image").src = q.image;
   $("previous").disabled = state.current === 0;
