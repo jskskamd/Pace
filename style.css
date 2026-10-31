@@ -149,6 +149,44 @@ a:focus-visible, .top button:focus-visible {
 
 .get-started:hover { background: #235ec4; }
 
+.top [hidden] { display: none; }
+
+/* Profile circle */
+.profile { position: relative; }
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: #2f6fde;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.avatar:hover { background: #235ec4; }
+
+.profile-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  z-index: 10;
+  width: min(260px, calc(100vw - 48px));
+  padding: 16px;
+  background: var(--bar);
+  border: 1px solid var(--bar-line);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(30, 70, 140, 0.16);
+}
+
+.profile-label { margin: 0; color: var(--muted); font-size: 13px; }
+
+.profile-email { margin: 2px 0 12px; font-weight: 600; overflow-wrap: anywhere; }
+
 /* Big blue card */
 .stage {
   display: flex;

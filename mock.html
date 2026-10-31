@@ -103,6 +103,31 @@
   </dialog>
 
   <script src="questions.js"></script>
-  <script src="mock.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    // Math and Critical Thinking are in questions.js. Any other mock comes from
+    // the database, which only hands it to accounts with access.
+    (async () => {
+      const id = new URLSearchParams(location.search).get("subject");
+      if (id && !TESTS[id]) {
+        const { data } = db
+          ? await db.from("mocks").select("title, minutes, total, questions").eq("id", id).maybeSingle()
+          : {};
+        if (!data) {
+          document.querySelector("#intro h1").textContent = "This mock isn't available";
+          document.getElementById("intro-subject").textContent = "Log in with an account that has access to it.";
+          document.querySelector("#intro .intro-note").hidden = true;
+          document.getElementById("begin").hidden = true;
+          return;
+        }
+        TESTS[id] = data;
+      }
+      const script = document.createElement("script");
+      script.src = "mock.js";
+      document.body.append(script);
+    })();
+  </script>
 </body>
 </html>

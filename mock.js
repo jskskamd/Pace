@@ -1,7 +1,8 @@
 const $ = (id) => document.getElementById(id);
 const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
-const subject = new URLSearchParams(location.search).get("subject") === "crit" ? "crit" : "math";
+const requested = new URLSearchParams(location.search).get("subject");
+const subject = requested in TESTS ? requested : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
 const storeKey = `pacemock-v5:${subject}`;
