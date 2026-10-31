@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mock test · Pacemock</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mock.css">
+  <script src="theme.js"></script>
+</head>
+<body class="exam-page">
+
+  <div class="exam" id="exam">
+    <aside class="side" id="side">
+      <a class="side-logo" href="index.html" aria-label="Pacemock home">
+        <svg class="mark" viewBox="0 0 64 44" aria-hidden="true">
+          <g fill="none" stroke-width="7" stroke-linecap="round">
+            <path class="mark-tail" d="M46 13A23 23 0 0 1 55 34"/>
+            <path class="mark-arc" d="M9 34A23 23 0 0 1 46 13"/>
+          </g>
+          <circle cx="46" cy="13" r="6.5" fill="#f2b544"/>
+        </svg>
+      </a>
+      <ul class="legend">
+        <li><span class="swatch is-answered"></span>Answered</li>
+        <li><span class="swatch is-current"></span>Current</li>
+        <li><span class="swatch"></span>Not answered</li>
+        <li><span class="swatch is-marked"></span>Marked</li>
+      </ul>
+      <nav class="grid" id="grid" aria-label="Questions"></nav>
+    </aside>
+
+    <div class="main">
+      <header class="exam-head">
+        <div class="head-left">
+          <button class="toggle-side" id="toggle-side" type="button" aria-controls="side">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg>
+          </button>
+          <div>
+            <h1>NUET Mock Test</h1>
+            <p id="progress"></p>
+          </div>
+        </div>
+        <div class="head-right">
+          <span class="timer" id="timer" role="timer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>
+            <span id="time"></span>
+          </span>
+          <button class="finish" id="finish" type="button">Finish Test</button>
+        </div>
+      </header>
+
+      <section class="question">
+        <button class="bookmark" id="bookmark" type="button" aria-label="Mark this question">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"/></svg>
+        </button>
+        <p class="question-text" id="question-text"></p>
+        <img class="question-image" id="question-image" alt="" hidden>
+        <div class="options" id="options"></div>
+      </section>
+
+      <div class="exam-nav">
+        <button class="previous" id="previous" type="button"><span aria-hidden="true">←</span> Previous</button>
+        <button class="next" id="next" type="button">Next <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </div>
+
+  <main class="results" id="results" hidden>
+    <h1>Test finished</h1>
+    <p class="results-subject" id="results-subject"></p>
+    <dl class="stats" id="stats"></dl>
+    <a class="next" href="index.html">Back to home</a>
+  </main>
+
+  <dialog class="confirm" id="confirm" aria-labelledby="confirm-title">
+    <h2 id="confirm-title">Finish the test?</h2>
+    <p id="confirm-text"></p>
+    <div class="confirm-actions">
+      <button class="previous" id="keep-going" type="button">Keep going</button>
+      <button class="next" id="confirm-finish" type="button">Finish</button>
+    </div>
+  </dialog>
+
+  <script src="questions.js"></script>
+  <script src="mock.js"></script>
+</body>
+</html>
