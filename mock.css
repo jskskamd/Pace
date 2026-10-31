@@ -127,7 +127,7 @@
 
 .toggle-side:hover { background: var(--hover); color: var(--text); }
 
-.head-right { display: flex; flex: none; align-items: center; gap: 20px; }
+.head-right { display: flex; flex: none; align-items: center; gap: 14px; }
 
 .timer {
   display: flex;
@@ -334,4 +334,10 @@
   .question { margin: 16px 16px 0; padding: 20px 16px; }
   .exam-nav { padding: 16px; }
   .results { margin-top: 8vh; width: calc(100% - 32px); }
+}
+
+@media (max-width: 560px) {
+  .exam-head { flex-wrap: wrap; gap: 10px; }
+  .head-right { width: 100%; }
+  .timer { margin-right: auto; }
 }

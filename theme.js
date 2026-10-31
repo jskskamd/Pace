@@ -5,3 +5,15 @@
   const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
   document.documentElement.dataset.theme = saved === "light" || saved === "dark" ? saved : prefersDark ? "dark" : "light";
 })();
+
+function setupThemeButton(button) {
+  const nextTheme = () => (document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+  const label = () => button.setAttribute("aria-label", `Switch to ${nextTheme()} mode`);
+  label();
+  button.addEventListener("click", () => {
+    const next = nextTheme();
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    label();
+  });
+}

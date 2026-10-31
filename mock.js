@@ -158,6 +158,7 @@ function finish() {
 $("previous").addEventListener("click", () => goTo(state.current - 1));
 $("next").addEventListener("click", () => goTo(state.current + 1));
 $("bookmark").addEventListener("click", toggleMark);
+setupThemeButton($("theme"));
 $("toggle-side").addEventListener("click", () => {
   state.sideClosed = !state.sideClosed;
   save();

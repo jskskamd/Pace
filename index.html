@@ -87,21 +87,9 @@
     const hero = document.getElementById("hero");
     const startButton = document.getElementById("start-mock");
     const mocks = document.getElementById("mocks");
-    const themeButton = document.getElementById("theme");
     let scrollTimer;
 
-    function labelThemeButton() {
-      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      themeButton.setAttribute("aria-label", `Switch to ${next} mode`);
-    }
-    labelThemeButton();
-
-    themeButton.addEventListener("click", () => {
-      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-      document.documentElement.dataset.theme = next;
-      try { localStorage.setItem("theme", next); } catch (e) {}
-      labelThemeButton();
-    });
+    setupThemeButton(document.getElementById("theme"));
 
     function openMocks(e) {
       if (hero.classList.contains("open")) return;
