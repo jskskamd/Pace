@@ -90,7 +90,18 @@
     <h1>Test finished</h1>
     <p class="results-subject" id="results-subject"></p>
     <dl class="stats" id="stats"></dl>
-    <a class="next" href="index.html">Back to home</a>
+    <div class="confirm-actions">
+      <a class="previous" href="index.html">Back to home</a>
+      <button class="next" id="show-review" type="button">See solutions</button>
+    </div>
+  </main>
+
+  <main class="review" id="review" hidden>
+    <div class="review-head">
+      <h1>Solutions</h1>
+      <button class="previous" id="hide-review" type="button"><span aria-hidden="true">←</span> Results</button>
+    </div>
+    <div id="review-list"></div>
   </main>
 
   <dialog class="confirm" id="confirm" aria-labelledby="confirm-title">

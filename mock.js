@@ -5,7 +5,7 @@ const requested = new URLSearchParams(location.search).get("subject");
 const subject = requested in TESTS ? requested : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
-const storeKey = `pacemock-v5:${subject}`;
+const storeKey = `pacemock-v6:${subject}`;
 
 const question = (i) => test.questions[i] || {
   q: `Question ${i + 1} will appear here.`,
@@ -85,7 +85,7 @@ function renderOptions(q) {
   }));
 }
 
-function renderTable(table) {
+function tableParts(table) {
   const row = (cells, tag) => {
     const tr = document.createElement("tr");
     tr.append(...cells.map((text) => {
@@ -95,19 +95,22 @@ function renderTable(table) {
     }));
     return tr;
   };
-  $("question-table").hidden = !table;
-  $("question-table").replaceChildren();
-  if (!table) return;
   const head = document.createElement("thead");
   const body = document.createElement("tbody");
   head.append(row(table.head, "th"));
   body.append(...table.rows.map((cells) => row(cells, "td")));
-  $("question-table").append(head, body);
+  return [head, body];
+}
+
+function renderTable(table) {
+  $("question-table").hidden = !table;
+  $("question-table").replaceChildren(...(table ? tableParts(table) : []));
 }
 
 function render() {
   const q = question(state.current);
-  $("progress").textContent = `${test.title} · Question ${state.current + 1} of ${total}`;
+  const worth = q.marks ? ` · ${q.marks} marks` : "";
+  $("progress").textContent = `${test.title} · Question ${state.current + 1} of ${total}${worth}`;
   $("passage").hidden = !q.passage;
   setText($("passage"), q.passage || "");
   renderTable(q.table);
@@ -186,8 +189,11 @@ function finish() {
     ["Marked", markedCount()],
     ["Time used", formatTime(used)],
   ];
-  const scored = test.questions.filter((q, i) => "answer" in q && state.answers[i] === q.answer).length;
-  if (test.questions.length) rows.unshift(["Score", `${scored} of ${total}`]);
+  const worth = (q) => q.marks || 1;
+  const sum = (list) => list.reduce((all, q) => all + worth(q), 0);
+  const scored = sum(test.questions.filter((q, i) => "answer" in q && state.answers[i] === q.answer));
+  if (test.questions.length) rows.unshift(["Score", `${scored} of ${sum(test.questions)}`]);
+  $("show-review").hidden = !test.questions.length;
 
   $("results-subject").textContent = test.title;
   $("stats").replaceChildren(...rows.map(([name, value]) => {
@@ -203,6 +209,73 @@ function finish() {
   $("results").hidden = false;
 }
 
+function element(tag, className, text) {
+  const node = document.createElement(tag);
+  node.className = className;
+  if (text !== undefined) setText(node, text);
+  return node;
+}
+
+function reviewOption(q, chosen, i, text) {
+  const mark = i === q.answer ? " right" : i === chosen ? " wrong" : "";
+  const option = element("div", `option${mark}`);
+  const label = element("span", "", text);
+  option.append(element("span", "letter", LETTERS[i]), label);
+  return option;
+}
+
+function reviewItem(q, index) {
+  const chosen = state.answers[index];
+  const unanswered = chosen === undefined;
+  const right = chosen === q.answer;
+  const item = element("article", "review-item");
+  const title = element("p", "review-title", `Question ${index + 1}${q.marks ? ` · ${q.marks} marks` : ""}`);
+  const status = element("span", `review-status${unanswered ? "" : right ? " right" : " wrong"}`,
+    unanswered ? "Not answered" : right ? "Correct" : "Wrong");
+  title.append(status);
+  item.append(title);
+
+  const text = element("p", "question-text", q.q);
+  const image = q.image ? element("img", "question-image") : null;
+  if (image) {
+    image.src = q.image;
+    image.alt = "";
+  }
+  if (q.passage) item.append(element("p", "passage", q.passage));
+  if (q.table) {
+    const table = element("table", "question-table");
+    table.append(...tableParts(q.table));
+    item.append(table);
+  }
+  item.append(...(q.passage ? [image, text] : [text, image]).filter(Boolean));
+
+  const options = element("div", "options");
+  options.append(...q.options.map((option, i) => reviewOption(q, chosen, i, option)));
+  item.append(options);
+
+  if (q.solution) {
+    const solution = element("div", "solution");
+    const heading = document.createElement("strong");
+    heading.textContent = "Solution";
+    const body = document.createElement("span");
+    setText(body, q.solution);
+    solution.append(heading, body);
+    item.append(solution);
+  }
+  return item;
+}
+
+function showReview(open) {
+  if (open && !$("review-list").children.length) {
+    $("review-list").append(...test.questions.map(reviewItem));
+  }
+  $("results").hidden = open;
+  $("review").hidden = !open;
+  scrollTo(0, 0);
+}
+
+$("show-review").addEventListener("click", () => showReview(true));
+$("hide-review").addEventListener("click", () => showReview(false));
 $("previous").addEventListener("click", () => goTo(state.current - 1));
 $("next").addEventListener("click", () => goTo(state.current + 1));
 $("bookmark").addEventListener("click", toggleMark);
