@@ -54,14 +54,12 @@
         <h1>Prepare for <span class="accent">NUET</span> with confidence</h1>
         <p class="lede">Two mock tests show you where you stand. After that, you'll know what to work on first.</p>
 
-        <div class="reveal start-area">
-          <div class="reveal-inner">
+        <div class="choice">
+          <div class="start-area">
             <button class="start" id="start-mock" type="button">Start mock test <span aria-hidden="true">→</span></button>
           </div>
-        </div>
 
-        <div class="reveal mocks-area">
-          <div class="reveal-inner mocks" id="mocks" inert>
+          <div class="mocks" id="mocks" inert>
             <a class="mock" href="mock.html?subject=math">
               <span class="mock-name">Math</span>
               <span class="mock-note">30 questions · 60 minutes</span>
@@ -88,6 +86,7 @@
     const startButton = document.getElementById("start-mock");
     const mocks = document.getElementById("mocks");
     let scrollTimer;
+    let unlockTimer;
 
     setupThemeButton(document.getElementById("theme"));
 
@@ -95,9 +94,14 @@
       if (hero.classList.contains("open")) return;
       hero.classList.add("open");
       startButton.parentElement.inert = true;
-      mocks.inert = false;
       // detail is 0 for keyboard presses: keep those users' place on the page
-      if (e.detail === 0) mocks.querySelector("a").focus({ preventScroll: true });
+      if (e.detail === 0) {
+        mocks.inert = false;
+        mocks.querySelector("a").focus({ preventScroll: true });
+      } else {
+        // The mocks appear under the cursor, so a double click must not open one
+        unlockTimer = setTimeout(() => { mocks.inert = false; }, 450);
+      }
       // On short screens the mocks can land below the fold
       scrollTimer = setTimeout(() => mocks.scrollIntoView({ block: "nearest", behavior: "smooth" }), 600);
     }
@@ -107,6 +111,7 @@
 
     document.getElementById("back").addEventListener("click", (e) => {
       clearTimeout(scrollTimer);
+      clearTimeout(unlockTimer);
       hero.classList.remove("open");
       mocks.inert = true;
       startButton.parentElement.inert = false;

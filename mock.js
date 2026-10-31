@@ -4,7 +4,7 @@ const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const subject = new URLSearchParams(location.search).get("subject") === "crit" ? "crit" : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
-const storeKey = `pacemock-v3:${subject}`;
+const storeKey = `pacemock-v4:${subject}`;
 
 const question = (i) => test.questions[i] || {
   q: `Question ${i + 1} will appear here.`,
@@ -26,10 +26,11 @@ function loadState() {
     const saved = JSON.parse(localStorage.getItem(storeKey));
     if (saved) return saved;
   } catch (e) {}
-  return { current: 0, answers: {}, marked: {}, endsAt: Date.now() + test.minutes * 60000 };
+  return { current: 0, answers: {}, marked: {} };
 }
 
 let state = loadState(); // saved on every change, so a refresh picks up where it stopped
+let timer;
 
 function save() {
   try { localStorage.setItem(storeKey, JSON.stringify(state)); } catch (e) {}
@@ -140,6 +141,14 @@ function tick() {
   if (left <= 0) finish();
 }
 
+function runExam() {
+  $("intro").hidden = true;
+  $("exam").hidden = false;
+  timer = setInterval(tick, 1000);
+  tick();
+  save();
+}
+
 function finish() {
   clearInterval(timer);
   clearSaved();
@@ -183,9 +192,12 @@ $("finish").addEventListener("click", () => {
 });
 $("keep-going").addEventListener("click", () => $("confirm").close());
 $("confirm-finish").addEventListener("click", finish);
+$("begin").addEventListener("click", () => {
+  state.endsAt = Date.now() + test.minutes * 60000;
+  runExam();
+});
 
+$("intro-subject").textContent = `${test.title} · ${total} questions · ${test.minutes} minutes`;
 render();
 renderSide();
-const timer = setInterval(tick, 1000);
-tick();
-save();
+if (state.endsAt) runExam();

@@ -173,8 +173,8 @@ a:focus-visible, .top button:focus-visible {
   position: absolute;
   top: 60%;
   left: 32%;
-  width: 150vmax;
-  height: 150vmax;
+  width: 1100px;
+  height: 1100px;
   background: radial-gradient(closest-side, rgba(255, 255, 255, 0.28), transparent);
   opacity: 0;
   transform: translate(-50%, -50%);
@@ -218,22 +218,14 @@ h1 {
   font-size: 19px;
 }
 
-/* Areas that open and close by animating their height */
-.reveal {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.55s var(--ease);
-}
+/* The button and the mocks share one space, so opening only fades and slides */
+.choice { display: grid; }
 
-.reveal-inner { min-height: 0; overflow: hidden; }
+.choice > * { grid-area: 1 / 1; }
 
-.start-area { grid-template-rows: 1fr; }
-.card.open .start-area { grid-template-rows: 0fr; }
-.card.open .mocks-area { grid-template-rows: 1fr; }
+.start-area { justify-self: start; transition: opacity 0.25s ease, transform 0.3s ease; }
 
-.start-area .reveal-inner { margin: 0 -8px; padding: 8px; transition: opacity 0.25s ease, transform 0.3s ease; }
-
-.card.open .start-area .reveal-inner { opacity: 0; transform: scale(0.94); }
+.card.open .start-area { opacity: 0; transform: scale(0.94); }
 
 .start {
   display: inline-flex;
@@ -258,8 +250,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
-  margin: 0 -8px;
-  padding: 36px 8px 8px;
+  padding-top: 32px;
 }
 
 .mock {
@@ -332,7 +323,7 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .start, .start-area .reveal-inner, .mock, .back { transition: none; }
+  .start, .start-area, .mock, .back { transition: none; }
   .card.open .mock, .card.open .mock:nth-child(2), .card.open .back { transition-delay: 0s; }
   .card.open::after { animation: none; }
 }

@@ -14,7 +14,17 @@
 </head>
 <body class="exam-page">
 
-  <div class="exam" id="exam">
+  <main class="results" id="intro">
+    <h1>Ready to begin?</h1>
+    <p class="results-subject" id="intro-subject"></p>
+    <p class="intro-note">The timer starts when you press Begin test.</p>
+    <div class="confirm-actions">
+      <a class="previous" href="index.html">Back</a>
+      <button class="next" id="begin" type="button">Begin test</button>
+    </div>
+  </main>
+
+  <div class="exam" id="exam" hidden>
     <aside class="side" id="side">
       <a class="side-logo" href="index.html" aria-label="Pacemock home">
         <svg class="mark" viewBox="0 0 64 44" aria-hidden="true">
