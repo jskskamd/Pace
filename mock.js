@@ -1,15 +1,25 @@
 const $ = (id) => document.getElementById(id);
-const LETTERS = ["A", "B", "C", "D", "E"];
+const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 const subject = new URLSearchParams(location.search).get("subject") === "crit" ? "crit" : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
-const storeKey = `pacemock:${subject}`;
+const storeKey = `pacemock-v2:${subject}`;
 
 const question = (i) => test.questions[i] || {
   q: `Question ${i + 1} will appear here.`,
-  options: LETTERS.map((letter) => `Option ${letter}`),
+  options: LETTERS.slice(0, 5).map((letter) => `Option ${letter}`),
 };
+
+// Writes text into an element, turning ^{...} into superscript
+function setText(element, text) {
+  element.replaceChildren(...text.split(/\^\{([^}]*)\}/).map((part, i) => {
+    if (i % 2 === 0) return document.createTextNode(part);
+    const sup = document.createElement("sup");
+    sup.textContent = part;
+    return sup;
+  }));
+}
 
 function loadState() {
   try {
@@ -53,6 +63,9 @@ function renderGrid() {
 }
 
 function renderOptions(q) {
+  // Long option lists go in two columns: A to D, then E to H
+  $("options").classList.toggle("two-columns", q.options.length > 5);
+  $("options").style.setProperty("--rows", Math.ceil(q.options.length / 2));
   $("options").replaceChildren(...q.options.map((text, i) => {
     const button = document.createElement("button");
     const letter = document.createElement("span");
@@ -63,7 +76,7 @@ function renderOptions(q) {
     button.setAttribute("aria-pressed", chosen);
     letter.className = "letter";
     letter.textContent = LETTERS[i];
-    label.textContent = text;
+    setText(label, text);
     button.append(letter, label);
     button.addEventListener("click", () => choose(i));
     return button;
@@ -73,7 +86,7 @@ function renderOptions(q) {
 function render() {
   const q = question(state.current);
   $("progress").textContent = `${test.title} · Question ${state.current + 1} of ${total}`;
-  $("question-text").textContent = q.q;
+  setText($("question-text"), q.q);
   $("question-image").hidden = !q.image;
   if (q.image) $("question-image").src = q.image;
   $("previous").disabled = state.current === 0;

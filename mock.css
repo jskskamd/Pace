@@ -191,11 +191,28 @@
 
 .bookmark.on svg { fill: currentColor; }
 
-.question-text { margin: 0 44px 22px 0; font-size: 19px; font-weight: 600; line-height: 1.5; }
+.question-text { margin: 0 44px 22px 0; font-size: 19px; font-weight: 600; line-height: 1.5; white-space: pre-line; }
 
-.question-image { display: block; max-width: 100%; margin-bottom: 22px; border-radius: 8px; }
+.question-image {
+  display: block;
+  max-width: min(100%, 320px);
+  max-height: 230px;
+  margin-bottom: 22px;
+  border-radius: 8px;
+}
+
+/* The diagrams are dark lines on white: flip them so they sit on the dark card */
+[data-theme="dark"] .question-image { filter: invert(1) hue-rotate(180deg); mix-blend-mode: screen; }
+
+sup { font-size: 0.72em; line-height: 0; }
 
 .options { display: grid; gap: 12px; }
+
+.options.two-columns {
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(var(--rows), auto);
+}
 
 .option {
   display: flex;
@@ -332,6 +349,7 @@
   .timer { font-size: 15px; }
   .finish { height: 40px; padding: 0 12px; font-size: 14px; }
   .question { margin: 16px 16px 0; padding: 20px 16px; }
+  .options.two-columns { grid-auto-flow: row; grid-template-columns: 1fr; grid-template-rows: none; }
   .exam-nav { padding: 16px; }
   .results { margin-top: 8vh; width: calc(100% - 32px); }
 }
