@@ -10,7 +10,7 @@ const TESTS = {
   math: {
     title: "Mathematics",
     total: 30,
-    minutes: 75,
+    minutes: 60,
     questions: [
       {
         q: "Which of the following statements are true?\n1) 8√15 < 15√8\n2) There are 6 primes between 30 and 50.\n3) 40% of 64 is less than 60% of 45.",

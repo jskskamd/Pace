@@ -4,7 +4,7 @@ const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const subject = new URLSearchParams(location.search).get("subject") === "crit" ? "crit" : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
-const storeKey = `pacemock-v2:${subject}`;
+const storeKey = `pacemock-v3:${subject}`;
 
 const question = (i) => test.questions[i] || {
   q: `Question ${i + 1} will appear here.`,
