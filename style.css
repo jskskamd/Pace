@@ -147,7 +147,7 @@ a:focus-visible, .top button:focus-visible {
   display: flex;
   flex: 1;
   padding-top: 20px;
-  padding-bottom: 12px;
+  padding-bottom: 20px;
 }
 
 .card {
@@ -295,16 +295,6 @@ h1 {
 .card.open .back { opacity: 1; transition-delay: 0.4s; }
 
 .back:hover { color: #fff; text-decoration: underline; }
-
-/* Footer */
-.end {
-  padding: 8px 0 18px;
-  color: var(--muted);
-  font-size: 14px;
-  text-align: center;
-}
-
-.end p { margin: 0; }
 
 @media (max-width: 860px) {
   .wrap { padding-left: 14px; padding-right: 14px; }
