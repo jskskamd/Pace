@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
-  <link rel="stylesheet" href="mock.css?v=5">
-  <script src="theme.js?v=5"></script>
+  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="mock.css?v=6">
+  <script src="theme.js?v=6"></script>
 </head>
 <body class="exam-page">
 
@@ -87,6 +87,16 @@
   </div>
 
   <main class="results" id="results" hidden>
+    <div class="gauge" id="gauge" hidden>
+      <svg viewBox="0 0 64 42" aria-hidden="true">
+        <g fill="none" stroke-width="7" stroke-linecap="round">
+          <path class="mark-tail" d="M9 34A23 23 0 0 1 46 13A23 23 0 0 1 55 34"/>
+          <path class="mark-arc" id="gauge-fill" d="M9 34A23 23 0 0 1 46 13A23 23 0 0 1 55 34" pathLength="100" stroke-dasharray="0 100"/>
+        </g>
+        <circle id="gauge-dot" cx="9" cy="34" r="6.5" fill="#f2b544"/>
+      </svg>
+      <p class="gauge-score" id="gauge-score"></p>
+    </div>
     <h1>Test finished</h1>
     <p class="results-subject" id="results-subject"></p>
     <dl class="stats" id="stats"></dl>
@@ -120,10 +130,10 @@
     </div>
   </dialog>
 
-  <script src="questions.js?v=5"></script>
+  <script src="questions.js?v=6"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-  <script src="config.js?v=5"></script>
-  <script src="auth.js?v=5"></script>
+  <script src="config.js?v=6"></script>
+  <script src="auth.js?v=6"></script>
   <script>
     // Math and Critical Thinking are in questions.js. Any other mock comes from
     // the database, which only hands it to accounts with access.
@@ -143,7 +153,7 @@
         TESTS[id] = data;
       }
       const script = document.createElement("script");
-      script.src = "mock.js?v=5";
+      script.src = "mock.js?v=6";
       document.body.append(script);
     })();
   </script>

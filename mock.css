@@ -356,6 +356,23 @@ sup { font-size: 0.72em; line-height: 0; }
 
 .stats dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 
+/* Logo that fills up with the score */
+.gauge { position: relative; width: 190px; margin: 0 auto 14px; }
+
+.gauge svg { display: block; width: 100%; }
+
+.gauge-score {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  left: 0;
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
 /* Performance by topic */
 .topics { margin: 0 0 28px; text-align: left; }
 

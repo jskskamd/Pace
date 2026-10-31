@@ -208,6 +208,7 @@ function finish() {
   }));
   $("exam").hidden = true;
   $("results").hidden = false;
+  if (test.questions.length) animateScore(scored, sum(test.questions));
 }
 
 function element(tag, className, text) {
@@ -215,6 +216,29 @@ function element(tag, className, text) {
   node.className = className;
   if (text !== undefined) setText(node, text);
   return node;
+}
+
+// The logo's dot climbs the arc as the score counts up. Full marks reaches the end of the arc.
+function animateScore(score, max) {
+  const fill = $("gauge-fill");
+  const length = fill.getTotalLength();
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const duration = calm ? 0 : 1800;
+  const start = performance.now();
+  $("gauge").hidden = false;
+
+  // A plain timer, because animation frames stop in a background tab and the score must still land
+  const draw = () => {
+    const t = duration ? Math.min(1, (performance.now() - start) / duration) : 1;
+    const share = (score / max) * (1 - (1 - t) ** 3);
+    const point = fill.getPointAtLength(share * length);
+    fill.setAttribute("stroke-dasharray", `${share * 100} 100`);
+    $("gauge-dot").setAttribute("cx", point.x);
+    $("gauge-dot").setAttribute("cy", point.y);
+    $("gauge-score").textContent = `${Math.round(share * max)}/${max}`;
+    if (t < 1) setTimeout(draw, 16);
+  };
+  draw();
 }
 
 // Share of marks earned in each topic, listed on the results
