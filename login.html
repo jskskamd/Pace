@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in · Pacemock</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+
+  <main class="auth">
+    <a class="brand" href="index.html">
+      <svg class="mark" viewBox="0 0 64 44" aria-hidden="true">
+        <g fill="none" stroke-width="7" stroke-linecap="round">
+          <path class="mark-tail" d="M46 13A23 23 0 0 1 55 34"/>
+          <path class="mark-arc" d="M9 34A23 23 0 0 1 46 13"/>
+        </g>
+        <circle cx="46" cy="13" r="6.5" fill="#f2b544"/>
+      </svg>
+      Pacemock
+    </a>
+
+    <h1 class="auth-title" id="title"></h1>
+
+    <form class="auth-form" id="form">
+      <label id="email-field">Email
+        <input id="email" type="email" autocomplete="email" required>
+      </label>
+      <label id="password-field">Password
+        <input id="password" type="password" autocomplete="current-password" minlength="8" required>
+      </label>
+      <button class="get-started" id="submit" type="submit"></button>
+    </form>
+
+    <p class="auth-message" id="message" role="status" hidden></p>
+    <button class="auth-link" id="resend" type="button" hidden>Send the email again</button>
+
+    <p class="auth-switch">
+      <button class="auth-link" id="forgot" type="button">Forgot password?</button>
+      <button class="auth-link" id="switch" type="button"></button>
+    </p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
