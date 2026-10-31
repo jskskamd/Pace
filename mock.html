@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3">
-  <link rel="stylesheet" href="mock.css?v=3">
-  <script src="theme.js?v=3"></script>
+  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="mock.css?v=4">
+  <script src="theme.js?v=4"></script>
 </head>
 <body class="exam-page">
 
@@ -113,10 +113,10 @@
     </div>
   </dialog>
 
-  <script src="questions.js?v=3"></script>
+  <script src="questions.js?v=4"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-  <script src="config.js?v=3"></script>
-  <script src="auth.js?v=3"></script>
+  <script src="config.js?v=4"></script>
+  <script src="auth.js?v=4"></script>
   <script>
     // Math and Critical Thinking are in questions.js. Any other mock comes from
     // the database, which only hands it to accounts with access.
@@ -136,7 +136,7 @@
         TESTS[id] = data;
       }
       const script = document.createElement("script");
-      script.src = "mock.js?v=3";
+      script.src = "mock.js?v=4";
       document.body.append(script);
     })();
   </script>

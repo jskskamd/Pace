@@ -352,7 +352,6 @@ h1 {
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
   padding: 44px 64px;
@@ -448,7 +447,7 @@ a.subject-mock:hover { background: #e9f2ff; }
   .search { display: none; }
   .card { align-items: flex-start; padding: 40px 26px 150px; border-radius: 30px; }
   .card-text { width: 100%; }
-  .subject { justify-content: flex-start; padding: 40px 26px 150px; }
+  .subject { padding: 40px 26px 150px; }
   .subject-list { width: 100%; }
   .arc { right: 22px; bottom: 26px; width: 150px; }
   .lede { font-size: 18px; }
