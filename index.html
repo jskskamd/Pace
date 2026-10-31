@@ -113,13 +113,9 @@
 
     startButton.addEventListener("click", openMocks);
 
-    // Get Started goes to Register, unless this person already has an account
     setupAccount().then((signedIn) => {
       if (!signedIn) return;
-      document.getElementById("get-started").addEventListener("click", (e) => {
-        e.preventDefault();
-        openMocks(e);
-      });
+      document.getElementById("get-started").hidden = true;
       addAccountMocks();
     });
 
