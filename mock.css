@@ -328,8 +328,8 @@ sup { font-size: 0.72em; line-height: 0; }
 
 /* Results */
 .results {
-  width: min(520px, 100%);
-  margin: 12vh auto 0;
+  width: min(560px, 100%);
+  margin: 6vh auto;
   padding: 36px;
   background: var(--bar);
   border: 1px solid var(--bar-line);
@@ -355,6 +355,38 @@ sup { font-size: 0.72em; line-height: 0; }
 .stats dt { color: var(--muted); }
 
 .stats dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Performance by topic */
+.topics { margin: 0 0 28px; text-align: left; }
+
+.topics h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font-size: 18px; letter-spacing: -0.015em; }
+
+.topics svg { width: 22px; height: 22px; fill: none; stroke: var(--mark); stroke-width: 3; stroke-linecap: round; }
+
+.topic-row {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 96px 42px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 14px;
+}
+
+.topic-code {
+  padding: 2px 0;
+  background: var(--hover);
+  border-radius: 8px;
+  color: var(--mark);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.topic-bar { height: 8px; overflow: hidden; background: var(--hover); border-radius: 999px; }
+
+.topic-fill { display: block; height: 100%; background: var(--mark); border-radius: 999px; }
+
+.topic-percent { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
 
 /* Solutions after the test */
 .review { width: min(820px, 100%); margin: 0 auto; }
@@ -442,7 +474,8 @@ sup { font-size: 0.72em; line-height: 0; }
   .question-table th, .question-table td { padding: 6px 8px; }
   .options.two-columns { grid-auto-flow: row; grid-template-columns: 1fr; grid-template-rows: none; }
   .exam-nav { padding: 16px; }
-  .results { margin-top: 8vh; width: calc(100% - 32px); }
+  .results { margin-top: 8vh; padding: 28px 20px; width: calc(100% - 32px); }
+  .topic-row { grid-template-columns: 34px minmax(0, 1fr) 64px 40px; gap: 8px; }
   .review { padding: 20px 16px; }
   .review-item { padding: 20px 16px; }
 }

@@ -128,7 +128,9 @@ a:focus-visible, .top button:focus-visible {
 [data-theme="dark"] .icon-moon { display: none; }
 
 .login, .get-started {
+  flex: none;
   height: 40px;
+  white-space: nowrap;
   padding: 0 18px;
   border: 0;
   border-radius: 12px;
@@ -150,6 +152,21 @@ a:focus-visible, .top button:focus-visible {
 .get-started:hover { background: #235ec4; }
 
 .top [hidden] { display: none; }
+
+.channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.channel:hover { background: var(--hover); }
+
+.channel svg { flex: none; width: 24px; height: 24px; }
 
 /* Profile circle */
 .profile { position: relative; }
@@ -445,12 +462,27 @@ a.subject-mock:hover { background: #e9f2ff; }
 @media (max-width: 860px) {
   .wrap { padding-left: 14px; padding-right: 14px; }
   .search { display: none; }
+  .channel { padding: 0 8px; }
+  .channel span { display: none; }
   .card { align-items: flex-start; padding: 40px 26px 150px; border-radius: 30px; }
   .card-text { width: 100%; }
   .subject { padding: 40px 26px 150px; }
   .subject-list { width: 100%; }
   .arc { right: 22px; bottom: 26px; width: 150px; }
   .lede { font-size: 18px; }
+}
+
+@media (max-width: 560px) {
+  .bar { padding-right: 10px; }
+  .top-right { gap: 2px; }
+  .login, .get-started { padding: 0 12px; font-size: 14px; }
+}
+
+@media (max-width: 400px) {
+  .brand { gap: 6px; font-size: 16px; }
+  .mark { width: 28px; height: 20px; }
+  .channel { padding: 0 4px; }
+  .icon-button { width: 34px; }
 }
 
 @media (max-width: 460px) {

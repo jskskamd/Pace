@@ -194,6 +194,7 @@ function finish() {
   const scored = sum(test.questions.filter((q, i) => "answer" in q && state.answers[i] === q.answer));
   if (test.questions.length) rows.unshift(["Score", `${scored} of ${sum(test.questions)}`]);
   $("show-review").hidden = !test.questions.length;
+  renderTopics(worth);
 
   $("results-subject").textContent = test.title;
   $("stats").replaceChildren(...rows.map(([name, value]) => {
@@ -214,6 +215,31 @@ function element(tag, className, text) {
   node.className = className;
   if (text !== undefined) setText(node, text);
   return node;
+}
+
+// Share of marks earned in each topic, listed on the results
+function renderTopics(worth) {
+  const topics = {};
+  test.questions.forEach((q, i) => {
+    if (!q.topic) return;
+    topics[q.topic] = topics[q.topic] || { got: 0, max: 0 };
+    topics[q.topic].max += worth(q);
+    if (state.answers[i] === q.answer) topics[q.topic].got += worth(q);
+  });
+  const names = Object.keys(topics).sort();
+  $("topics").hidden = !names.length;
+  $("topic-list").replaceChildren(...names.map((name) => {
+    const [code, ...rest] = name.split(" ");
+    const percent = Math.round(topics[name].got / topics[name].max * 100);
+    const row = element("div", "topic-row");
+    const bar = element("span", "topic-bar");
+    const fill = element("span", "topic-fill");
+    fill.style.width = `${percent}%`;
+    bar.append(fill);
+    row.append(element("span", "topic-code", code), element("span", "topic-name", rest.join(" ")), bar,
+      element("span", "topic-percent", `${percent}%`));
+    return row;
+  }));
 }
 
 function reviewOption(q, chosen, i, text) {
