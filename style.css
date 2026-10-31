@@ -341,20 +341,7 @@ h1 {
 
 .back:hover { color: #fff; text-decoration: underline; }
 
-/* The card turns white and lists a subject's mocks */
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: var(--bar);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-
-.card.in-subject::before { opacity: 1; }
-
+/* The card clears and lists a subject's mocks */
 .card-text { transition: opacity 0.2s ease; }
 
 .card.in-subject .card-text { opacity: 0; }
@@ -363,9 +350,13 @@ h1 {
   position: absolute;
   inset: 0;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   overflow-y: auto;
   padding: 44px 64px;
-  color: var(--text);
+  color: #fff;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s;
@@ -381,31 +372,33 @@ h1 {
   background: none;
   border: 0;
   border-radius: 8px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 15px;
 }
 
-.subject-back:hover { color: var(--text); text-decoration: underline; }
+.subject-back:hover { color: #fff; text-decoration: underline; }
 
-.card .subject button:focus-visible, .card .subject a:focus-visible { outline-color: var(--mark); }
-
-.subject-list { display: grid; gap: 12px; max-width: 620px; }
+.subject-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  width: min(620px, 62%);
+}
 
 .subject-mock {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 18px 22px;
-  border: 1px solid var(--bar-line);
-  border-radius: 16px;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  padding: 20px 22px;
+  background: #fff;
+  border-radius: 20px;
+  color: #15233d;
+  transition: background 0.15s ease;
 }
 
-a.subject-mock:hover { background: var(--hover); border-color: var(--mark); }
+a.subject-mock:hover { background: #e9f2ff; }
 
-.subject-mock .mock-note { color: var(--muted); }
-
-.subject-mock.soon { opacity: 0.55; }
+.subject-mock.soon { opacity: 0.6; }
 
 /* Log in and register */
 .auth {
@@ -455,7 +448,8 @@ a.subject-mock:hover { background: var(--hover); border-color: var(--mark); }
   .search { display: none; }
   .card { align-items: flex-start; padding: 40px 26px 150px; border-radius: 30px; }
   .card-text { width: 100%; }
-  .subject { padding: 28px 26px; }
+  .subject { justify-content: flex-start; padding: 40px 26px 150px; }
+  .subject-list { width: 100%; }
   .arc { right: 22px; bottom: 26px; width: 150px; }
   .lede { font-size: 18px; }
 }
@@ -468,7 +462,7 @@ a.subject-mock:hover { background: var(--hover); border-color: var(--mark); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .start, .start-area, .mock, .back, .card::before, .card-text, .subject { transition: none; }
+  .start, .start-area, .mock, .back, .card-text, .subject { transition: none; }
   .card.open .mock, .card.open .mock:nth-child(2), .card.open .back { transition-delay: 0s; }
   .card.open::after { animation: none; }
 }
