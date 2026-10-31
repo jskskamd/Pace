@@ -68,17 +68,23 @@
           </div>
 
           <div class="mocks" id="mocks" inert>
-            <a class="mock" href="mock.html?subject=math">
+            <button class="mock" data-subject="math" type="button">
               <span class="mock-name">Math</span>
-              <span class="mock-note">30 questions · 60 minutes</span>
-            </a>
-            <a class="mock" href="mock.html?subject=crit">
+              <span class="mock-note">2 mocks</span>
+            </button>
+            <button class="mock" data-subject="crit" type="button">
               <span class="mock-name">Critical Thinking &amp; PS</span>
-              <span class="mock-note">30 questions · 60 minutes</span>
-            </a>
+              <span class="mock-note">1 mock</span>
+            </button>
             <button class="back" id="back" type="button">← Back</button>
           </div>
         </div>
+      </div>
+
+      <div class="subject" id="subject" inert>
+        <button class="subject-back" id="subject-back" type="button">← Back</button>
+        <h2 id="subject-title"></h2>
+        <div class="subject-list" id="subject-list"></div>
       </div>
     </section>
   </main>
@@ -102,7 +108,7 @@
       // detail is 0 for keyboard presses: keep those users' place on the page
       if (e.detail === 0) {
         mocks.inert = false;
-        mocks.querySelector("a").focus({ preventScroll: true });
+        mocks.querySelector(".mock").focus({ preventScroll: true });
       } else {
         // The mocks appear under the cursor, so a double click must not open one
         unlockTimer = setTimeout(() => { mocks.inert = false; }, 450);
@@ -112,6 +118,59 @@
     }
 
     startButton.addEventListener("click", openMocks);
+
+    // Add a line here for each new mock. A mock with no href shows as coming soon.
+    const SUBJECTS = {
+      math: {
+        title: "Math",
+        mocks: [
+          { name: "Mock 1", note: "30 questions · 60 minutes · 120 marks", href: "mock.html?subject=math" },
+          { name: "Mock 2", note: "30 questions · 60 minutes", href: "mock.html?subject=math2" },
+        ],
+      },
+      crit: {
+        title: "Critical Thinking & PS",
+        mocks: [
+          { name: "Mock 1", note: "30 questions · 60 minutes", href: "mock.html?subject=crit" },
+          { name: "Mock 2", note: "Coming soon" },
+        ],
+      },
+    };
+
+    const subject = document.getElementById("subject");
+
+    function subjectRow(mock) {
+      const row = document.createElement(mock.href ? "a" : "div");
+      const name = document.createElement("span");
+      const note = document.createElement("span");
+      row.className = mock.href ? "subject-mock" : "subject-mock soon";
+      if (mock.href) row.href = mock.href;
+      name.className = "mock-name";
+      name.textContent = mock.name;
+      note.className = "mock-note";
+      note.textContent = mock.note;
+      row.append(name, note);
+      return row;
+    }
+
+    function openSubject(e) {
+      const chosen = SUBJECTS[e.currentTarget.dataset.subject];
+      document.getElementById("subject-title").textContent = chosen.title;
+      document.getElementById("subject-list").replaceChildren(...chosen.mocks.map(subjectRow));
+      hero.classList.add("in-subject");
+      hero.querySelector(".card-text").inert = true;
+      subject.inert = false;
+      if (e.detail === 0) document.getElementById("subject-back").focus({ preventScroll: true });
+    }
+
+    document.querySelectorAll("[data-subject]").forEach((button) => button.addEventListener("click", openSubject));
+
+    document.getElementById("subject-back").addEventListener("click", (e) => {
+      hero.classList.remove("in-subject");
+      subject.inert = true;
+      hero.querySelector(".card-text").inert = false;
+      if (e.detail === 0) document.querySelector("[data-subject]").focus({ preventScroll: true });
+    });
 
     setupAccount().then((signedIn) => {
       if (!signedIn) return;
