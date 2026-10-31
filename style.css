@@ -138,7 +138,14 @@ a:focus-visible, .top button:focus-visible {
 
 .login { display: inline-flex; align-items: center; background: none; color: var(--text); }
 
-.get-started { background: #2f6fde; color: #fff; transition: background 0.15s ease; }
+.get-started {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2f6fde;
+  color: #fff;
+  transition: background 0.15s ease;
+}
 
 .get-started:hover { background: #235ec4; }
 
