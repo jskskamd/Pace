@@ -18,6 +18,7 @@
 const TESTS = {
   math: {
     title: "Mathematics Mock 1",
+    version: 2, // Mock Test 28, revised edition
     total: 30,
     minutes: 60,
     outOf: 120,

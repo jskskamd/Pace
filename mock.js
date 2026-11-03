@@ -5,7 +5,9 @@ const requested = new URLSearchParams(location.search).get("subject");
 const subject = Object.hasOwn(TESTS, requested || "") ? requested : "math";
 const test = TESTS[subject];
 const total = Math.max(test.total, test.questions.length);
-const storeKey = `pacemock-v8:${subject}${window.accountId ? `:${window.accountId}` : ""}`;
+// A test's version is part of the key, so answers saved for an older paper are never scored against a new one
+const testKey = `${subject}${test.version ? `@${test.version}` : ""}`;
+const storeKey = `pacemock-v8:${testKey}${window.accountId ? `:${window.accountId}` : ""}`;
 
 const question = (i) => test.questions[i] || {
   q: `Question ${i + 1} will appear here.`,
@@ -83,7 +85,7 @@ function loadState() {
 // A test finished while signed out waits under the plain key. Signing in claims it for the account.
 function claimSignedOutTest() {
   if (!window.accountId) return false;
-  const signedOutKey = `pacemock-v8:${subject}`;
+  const signedOutKey = `pacemock-v8:${testKey}`;
   try {
     const finished = JSON.parse(localStorage.getItem(signedOutKey));
     if (!finished?.finished || localStorage.getItem(storeKey)) return false;
