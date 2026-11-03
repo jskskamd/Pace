@@ -183,7 +183,8 @@ function renderTable(table) {
 
 function render() {
   const q = question(state.current);
-  $("progress").textContent = `${test.title} · Question ${state.current + 1} of ${total}${shownMarks(q)}`;
+  // Marks stay hidden during the test; the solutions show each question's marks at the end
+  $("progress").textContent = `${test.title} · Question ${state.current + 1} of ${total}`;
   $("passage").hidden = !q.passage;
   setText($("passage"), q.passage || "");
   renderTable(q.table);
