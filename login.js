@@ -8,6 +8,9 @@ const MODES = {
 };
 
 const pageUrl = (name) => new URL(name, location.href).href;
+// After logging in or verifying, go back to a finished mock if one sent you here, otherwise home
+const next = new URLSearchParams(location.search).get("next") || "";
+const afterLogin = /^mock\.html\?subject=[a-z0-9]+$/.test(next) ? next : "index.html";
 let mode = "login";
 let pendingEmail = "";
 
@@ -42,7 +45,7 @@ function askToVerify(email, text) {
 const actions = {
   async login(email, password) {
     const { error } = await db.auth.signInWithPassword({ email, password });
-    if (!error) return location.assign("index.html");
+    if (!error) return location.assign(afterLogin);
     if (/confirm/i.test(error.message)) return askToVerify(email, "Please verify your email first. Check your inbox.");
     say(/invalid login/i.test(error.message) ? "Wrong email or password." : "We couldn't log you in. Please try again in a minute.");
   },
@@ -50,7 +53,7 @@ const actions = {
     const { data, error } = await db.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: pageUrl("index.html") },
+      options: { emailRedirectTo: pageUrl(afterLogin) },
     });
     if (error) return say(error.message);
     // Supabase returns no identities when the email already has an account
@@ -82,7 +85,7 @@ $("resend").addEventListener("click", async () => {
   const { error } = await db.auth.resend({
     type: "signup",
     email: pendingEmail,
-    options: { emailRedirectTo: pageUrl("index.html") },
+    options: { emailRedirectTo: pageUrl(afterLogin) },
   });
   say(error ? error.message : `Sent again to ${pendingEmail}.`);
 });

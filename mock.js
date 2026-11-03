@@ -80,6 +80,22 @@ function loadState() {
   return { current: 0, answers: {}, marked: {} };
 }
 
+// A test finished while signed out waits under the plain key. Signing in claims it for the account.
+function claimSignedOutTest() {
+  if (!window.accountId) return false;
+  const signedOutKey = `pacemock-v8:${subject}`;
+  try {
+    const finished = JSON.parse(localStorage.getItem(signedOutKey));
+    if (!finished?.finished || localStorage.getItem(storeKey)) return false;
+    localStorage.setItem(storeKey, JSON.stringify(finished));
+    localStorage.removeItem(signedOutKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+const claimed = claimSignedOutTest();
 let state = loadState(); // saved on every change, so a refresh picks up where it stopped
 let timer;
 let lastLeft;
@@ -283,6 +299,23 @@ function finish() {
     state.used = Math.min(test.minutes * 60000, test.minutes * 60000 - (state.endsAt - Date.now()));
     save();
     saveAttempt(scored);
+  } else if (claimed) {
+    saveAttempt(scored);
+  }
+
+  // Signed out, the results wait behind a free account; after signing in they come back here
+  if (!window.accountId && test.questions.length) {
+    const back = encodeURIComponent(`mock.html?subject=${subject}`);
+    $("gate-register").href = `login.html?mode=register&next=${back}`;
+    $("gate-login").href = `login.html?next=${back}`;
+    $("results-subject").textContent = test.title;
+    $("results-gate").hidden = false;
+    $("stats").hidden = true;
+    $("results-actions").hidden = true;
+    $("intro").hidden = true;
+    $("exam").hidden = true;
+    $("results").hidden = false;
+    return;
   }
   const rows = [
     ["Answered", `${answeredCount()} of ${total}`],

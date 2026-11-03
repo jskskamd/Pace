@@ -355,6 +355,10 @@ sup { font-size: 0.72em; line-height: 0; }
 
 .confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
+.results-gate p { margin: 6px 0 22px; color: var(--muted); }
+
+.results-gate .confirm-actions a { display: grid; place-items: center; text-align: center; }
+
 .confirm-actions button { min-width: 0; padding: 0; }
 
 .confirm-actions #show-review { grid-column: 1 / -1; order: -1; }

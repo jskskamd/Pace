@@ -10,9 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=39">
-  <link rel="stylesheet" href="mock.css?v=39">
-  <script src="theme.js?v=39"></script>
+  <link rel="stylesheet" href="style.css?v=40">
+  <link rel="stylesheet" href="mock.css?v=40">
+  <script src="theme.js?v=40"></script>
 </head>
 <body class="exam-page">
 
@@ -103,6 +103,13 @@
     </div>
     <h1>Test finished</h1>
     <p class="results-subject" id="results-subject"></p>
+    <div class="results-gate" id="results-gate" hidden>
+      <p>Create a free account to see your score, your answers and the worked solutions. Your answers are kept on this device until you do.</p>
+      <div class="confirm-actions">
+        <a class="next" id="gate-register" href="login.html?mode=register">Create a free account</a>
+        <a class="previous" id="gate-login" href="login.html">Log in</a>
+      </div>
+    </div>
     <dl class="stats" id="stats"></dl>
     <section class="topics" id="topics" hidden>
       <h2>
@@ -111,7 +118,7 @@
       </h2>
       <div id="topic-list"></div>
     </section>
-    <div class="confirm-actions">
+    <div class="confirm-actions" id="results-actions">
       <a class="previous" href="index.html">Back to home</a>
       <button class="previous" id="retake" type="button">Retake test</button>
       <button class="next" id="show-review" type="button">See solutions</button>
@@ -145,10 +152,10 @@
     </div>
   </dialog>
 
-  <script src="questions.js?v=39"></script>
+  <script src="questions.js?v=40"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
-  <script src="config.js?v=39"></script>
-  <script src="auth.js?v=39"></script>
+  <script src="config.js?v=40"></script>
+  <script src="auth.js?v=40"></script>
   <script>
     // Math and Critical Thinking are in questions.js. Any other mock comes from
     // the database, which only hands it to accounts with access.
@@ -169,7 +176,7 @@
         TESTS[id] = data;
       }
       const script = document.createElement("script");
-      script.src = "mock.js?v=39";
+      script.src = "mock.js?v=40";
       document.body.append(script);
     })();
   </script>
