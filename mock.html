@@ -164,7 +164,7 @@
       window.accountId = savedAccountId();
       if (id && !Object.hasOwn(TESTS, id)) {
         const { data } = db
-          ? await db.from("mocks").select("title, minutes, total, questions").eq("id", id).maybeSingle()
+          ? await db.from("mocks").select("title, minutes, total, questions, version").eq("id", id).maybeSingle()
           : {};
         if (!data) {
           document.querySelector("#intro h1").textContent = "This mock isn't available";
